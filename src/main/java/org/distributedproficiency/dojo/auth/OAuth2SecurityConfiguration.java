@@ -91,10 +91,10 @@ public class OAuth2SecurityConfiguration {
 		@Override
 		public void configure(HttpSecurity http) throws Exception {
 			
-			http.csrf().disable();
-			
-			http
-			.authorizeRequests()
+			//http.csrf().disable();
+
+
+			http.authorizeRequests()
 				.antMatchers("/oauth/token").anonymous();
 			
 			
@@ -130,7 +130,7 @@ public class OAuth2SecurityConfiguration {
 		private Log log = LogFactory.getLog(OAuth2Config.class);
 
 		// Delegate the processing of Authentication requests to the framework
-		@Autowired
+		//@Autowired
 		private AuthenticationManager authenticationManager;
 		
 		@Autowired
@@ -152,7 +152,6 @@ public class OAuth2SecurityConfiguration {
 		 * this code for testing, at the bare minimum, you should consider changing the
 		 * passwords listed below and updating the VideoSvcClientApiTest.
 		 * 
-		 * @param auth
 		 * @throws Exception
 		 */
 		public OAuth2Config() throws Exception {
@@ -282,22 +281,22 @@ public class OAuth2SecurityConfiguration {
 			@Override
 			public void customize(ConfigurableEmbeddedServletContainer container) {
 		            TomcatEmbeddedServletContainerFactory tomcat = (TomcatEmbeddedServletContainerFactory) container;
-		            tomcat.addConnectorCustomizers(
-		                    new TomcatConnectorCustomizer() {
-								@Override
-								public void customize(Connector connector) {
-									connector.setPort(8443);
-			                        connector.setSecure(true);
-			                        connector.setScheme("https");
-
-			                        Http11NioProtocol proto = (Http11NioProtocol) connector.getProtocolHandler();
-			                        proto.setSSLEnabled(true);
-			                        proto.setKeystoreFile(absoluteKeystoreFile);
-			                        proto.setKeystorePass(keystorePass);
-			                        proto.setKeystoreType("JKS");
-			                        proto.setKeyAlias("tomcat");
-								}
-		                    });
+//		            tomcat.addConnectorCustomizers(
+//		                    new TomcatConnectorCustomizer() {
+//								@Override
+//								public void customize(Connector connector) {
+//									connector.setPort(8443);
+//			                        connector.setSecure(true);
+//			                        connector.setScheme("https");
+//
+//			                        Http11NioProtocol proto = (Http11NioProtocol) connector.getProtocolHandler();
+//			                        proto.setSSLEnabled(true);
+//			                        proto.setKeystoreFile(absoluteKeystoreFile);
+//			                        proto.setKeystorePass(keystorePass);
+//			                        proto.setKeystoreType("JKS");
+//			                        proto.setKeyAlias("tomcat");
+//								}
+//		                    });
 		    
 			}
         };

@@ -5,6 +5,7 @@ import org.distributedproficiency.dojo.services.RegistrationService;
 import org.distributedproficiency.dojo.services.RegistrationServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +20,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableAutoConfiguration
 // Tell Spring to turn on WebMVC (e.g., it should enable the DispatcherServlet
 // so that requests can be routed to our Controllers)
-@EnableWebMvc
+//@EnableWebMvc
 // Tell Spring that this object represents a Configuration for the
 // application
 @Configuration
@@ -31,10 +32,11 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 // We use the @Import annotation to include our OAuth2SecurityConfiguration
 // as part of this configuration so that we can have security and oauth
 // setup by Spring
-@Import({ OAuth2SecurityConfiguration.class, DojoUserManagementConfiguration.class})
-@EnableJpaRepositories("org.coursera.androidcapstone.impatient.repository")
+@Import({ OAuth2SecurityConfiguration.class, DojoUserManagementConfiguration.class, SwaggerConfiguration.class })
+@EnableJpaRepositories("org.distributedproficiency.dojo.repository")
 @EnableScheduling
 @EnableGlobalMethodSecurity(prePostEnabled=true)
+@SpringBootApplication
 public class Application {
 
     private static final String MAX_REQUEST_SIZE = "150MB";
