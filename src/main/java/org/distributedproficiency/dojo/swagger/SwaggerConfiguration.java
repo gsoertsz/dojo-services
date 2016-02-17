@@ -1,5 +1,6 @@
-package org.distributedproficiency.dojo;
+package org.distributedproficiency.dojo.swagger;
 
+import io.swagger.annotations.Api;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -19,7 +20,7 @@ public class SwaggerConfiguration {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(ApiInfo.DEFAULT)
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.withClassAnnotation(DojoApiDocoWorthy.class))
                 .paths(PathSelectors.any())
                 .build();
     }

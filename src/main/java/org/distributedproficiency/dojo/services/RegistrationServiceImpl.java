@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import org.distributedproficiency.dojo.auth.DojoUserRole;
 import org.distributedproficiency.dojo.domain.Registration;
 import org.distributedproficiency.dojo.domain.RegistrationStatus;
 import org.distributedproficiency.dojo.domain.Student;
@@ -47,7 +46,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 				
 				try {
 					// create the user
-					User user = userService.createUserWithUsernameAndType(r.getUsername(), DojoUserRole.PATIENT);
+					User user = userService.createUserWithUsernameAndType(r.getUsername());
 					userRepository.save(user);
 					
 					// create the patient

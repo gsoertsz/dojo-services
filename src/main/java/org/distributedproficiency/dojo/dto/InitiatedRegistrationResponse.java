@@ -1,5 +1,7 @@
 package org.distributedproficiency.dojo.dto;
 
+import io.swagger.annotations.ApiModel;
+
 public class InitiatedRegistrationResponse {
 	
 	private Long registrationId;
