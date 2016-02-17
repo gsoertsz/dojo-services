@@ -64,12 +64,12 @@ public class Registration {
 		this.initiatedDateTime = initiatedDateTime;
 	}
 
-	public Student getPatient() {
+	public Student getStudent() {
 		return student;
 	}
 
-	public void setPatient(Student patient) {
-		this.student = patient;
+	public void setStudent(Student student) {
+		this.student = student;
 	}
 	
 }
