@@ -1,8 +1,8 @@
 package org.distributedproficiency.dojo;
 
-import org.distributedproficiency.dojo.auth.OAuth2SecurityConfiguration;
 import org.distributedproficiency.dojo.services.RegistrationService;
 import org.distributedproficiency.dojo.services.RegistrationServiceImpl;
+import org.distributedproficiency.dojo.swagger.SwaggerConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,15 +12,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+//import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
-//Tell Spring to automatically inject any dependencies that are marked in
-//our classes with @Autowired
 @EnableAutoConfiguration
 // Tell Spring to turn on WebMVC (e.g., it should enable the DispatcherServlet
 // so that requests can be routed to our Controllers)
-//@EnableWebMvc
 // Tell Spring that this object represents a Configuration for the
 // application
 @Configuration
@@ -32,10 +28,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 // We use the @Import annotation to include our OAuth2SecurityConfiguration
 // as part of this configuration so that we can have security and oauth
 // setup by Spring
-@Import({ OAuth2SecurityConfiguration.class, DojoUserManagementConfiguration.class, SwaggerConfiguration.class })
+@Import({ DojoUserManagementConfiguration.class, SwaggerConfiguration.class })
 @EnableJpaRepositories("org.distributedproficiency.dojo.repository")
 @EnableScheduling
-@EnableGlobalMethodSecurity(prePostEnabled=true)
+//@EnableGlobalMethodSecurity(prePostEnabled=true)
 @SpringBootApplication
 public class Application {
 
