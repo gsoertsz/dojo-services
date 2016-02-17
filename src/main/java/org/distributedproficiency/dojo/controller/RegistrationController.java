@@ -2,6 +2,7 @@ package org.distributedproficiency.dojo.controller;
 
 import java.util.Collection;
 
+import io.swagger.annotations.Api;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.distributedproficiency.dojo.auth.DojoAuthConstants;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(value = "registration", description = "registration service")
 @RestController
 public class RegistrationController {
 	
