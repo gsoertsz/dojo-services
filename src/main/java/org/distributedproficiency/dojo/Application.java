@@ -1,7 +1,6 @@
 package org.distributedproficiency.dojo;
 
-import org.distributedproficiency.dojo.services.RegistrationService;
-import org.distributedproficiency.dojo.services.RegistrationServiceImpl;
+import org.distributedproficiency.dojo.services.*;
 import org.distributedproficiency.dojo.swagger.SwaggerConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -62,5 +61,16 @@ public class Application {
     public RegistrationService getRegistrationService() {
     	return new RegistrationServiceImpl();
     }
-    
+
+    @Bean
+    public KataTagService getKataTagService() { return new KataTagServiceImpl(); }
+
+    @Bean
+    public KataAttemptService getKataAttemptService() { return new KataAttemptServiceImpl(); }
+
+    @Bean
+    public KataStatusEventService getKataStatusEventService() { return new KataStatusEventServiceImpl(); }
+
+    @Bean
+    public KataService getKataService() { return new KataServiceImpl(); }
 }

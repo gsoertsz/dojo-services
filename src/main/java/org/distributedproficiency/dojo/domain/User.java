@@ -6,10 +6,8 @@
  */
 package org.distributedproficiency.dojo.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 public class User /*implements UserDetails*/ {
@@ -23,12 +21,16 @@ public class User /*implements UserDetails*/ {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 
-	
-	public static User create(String username) {
-		User u = new User(username);
-		//u.setUserRole(null);
-		return u;
-	}
+    @OneToMany
+    private Collection<KataAttempt> completedKatas;
+
+    @OneToMany
+    private Collection<KataAttempt> inProgressKatas;
+
+    public static User create(String username) {
+        User u = new User(username);
+        return u;
+    }
 
 	private String username;
 
@@ -44,16 +46,48 @@ public class User /*implements UserDetails*/ {
 	}
 
 	private User(String username, String password) {
-		super();
-		this.username = username;
-		this.password = password;
-	}
+        super();
+        this.username = username;
+        this.password = password;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Collection<KataAttempt> getCompletedKatas() {
+        return completedKatas;
+    }
+
+    public void setCompletedKatas(Collection<KataAttempt> completedKatas) {
+        this.completedKatas = completedKatas;
+    }
+
+    public Collection<KataAttempt> getInProgressKatas() {
+        return inProgressKatas;
+    }
+
+    public void setInProgressKatas(Collection<KataAttempt> inProgressKatas) {
+        this.inProgressKatas = inProgressKatas;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
