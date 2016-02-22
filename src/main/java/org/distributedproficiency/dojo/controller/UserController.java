@@ -4,17 +4,15 @@ import java.security.Principal;
 
 import io.swagger.annotations.Api;
 import org.distributedproficiency.dojo.domain.User;
+import org.distributedproficiency.dojo.dto.UserCreateRequest;
+import org.distributedproficiency.dojo.dto.UserCreatedResponse;
 import org.distributedproficiency.dojo.services.UserAlreadyExistsException;
 import org.distributedproficiency.dojo.services.UserNotFoundException;
 import org.distributedproficiency.dojo.services.UserService;
 import org.distributedproficiency.dojo.swagger.DojoApiDocoWorthy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @DojoApiDocoWorthy
@@ -33,4 +31,12 @@ public class UserController {
 	public void createAdminUser(@PathVariable("username") String username) throws UserAlreadyExistsException {
 		userService.createUserWithUsernameAndType(username);
 	}
+
+    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public UserCreatedResponse createUser(@RequestBody UserCreateRequest createRequest) {
+        User u = userService.createUserWithUsernameAndType(createRequest.getUsername());
+        UserCreatedResponse resp = new UserCreatedResponse(u.getId(), u.getUsername(), new Long(u.getCreatedDateTime().getTime()));
+        return resp;
+    }
 }

@@ -1,28 +1,15 @@
 package org.distributedproficiency.dojo.services;
 
-public class UserAlreadyExistsException extends Exception {
+import org.distributedproficiency.dojo.common.DojoSomethingAlreadyExistsException;
 
-	private static final long serialVersionUID = 556763714858227963L;
-
-	public UserAlreadyExistsException() {
-		super();
-	}
-
-	public UserAlreadyExistsException(String message) {
-		super(message);
-	}
-
-	public UserAlreadyExistsException(Throwable cause) {
-		super(cause);
-	}
+public class UserAlreadyExistsException extends DojoSomethingAlreadyExistsException {
 
 	public UserAlreadyExistsException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public UserAlreadyExistsException(String message, Throwable cause,
-			boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
+	public UserAlreadyExistsException(String message) {
+		super(message);
 	}
 
 }

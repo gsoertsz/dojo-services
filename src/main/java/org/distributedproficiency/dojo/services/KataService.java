@@ -4,7 +4,13 @@ import org.distributedproficiency.dojo.domain.Kata;
 import org.distributedproficiency.dojo.domain.KataAttempt;
 import org.distributedproficiency.dojo.domain.User;
 
+import java.util.Collection;
+
 public interface KataService {
+
+    public Collection<Kata> getAllKatasByAuthor(User u);
+
+    public Kata getKataById(Long id);
 
     public Kata initiateCreateKata(User creator);
 

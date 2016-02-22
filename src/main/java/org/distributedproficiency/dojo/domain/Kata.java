@@ -23,6 +23,9 @@ public class Kata {
     @Temporal(value=TemporalType.TIMESTAMP)
     private Date lastUpdatedDateTime;
 
+    @Embedded
+    private KataContent kataContent;
+
     private KataStatus status;
     private String title;
     private String description;
@@ -93,5 +96,11 @@ public class Kata {
         this.lastUpdatedDateTime = lastUpdatedDateTime;
     }
 
+    public KataContent getKataContent() {
+        return kataContent;
+    }
 
+    public void setKataContent(KataContent kataContent) {
+        this.kataContent = kataContent;
+    }
 }

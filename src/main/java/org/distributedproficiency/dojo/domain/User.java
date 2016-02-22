@@ -8,6 +8,7 @@ package org.distributedproficiency.dojo.domain;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 public class User /*implements UserDetails*/ {
@@ -20,6 +21,17 @@ public class User /*implements UserDetails*/ {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
+
+    public Date getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public void setCreatedDateTime(Date createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
+
+    @Temporal(value=TemporalType.TIMESTAMP)
+    private Date createdDateTime;
 
     @OneToMany
     private Collection<KataAttempt> completedKatas;

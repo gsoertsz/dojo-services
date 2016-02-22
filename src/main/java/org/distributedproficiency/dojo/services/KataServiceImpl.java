@@ -4,7 +4,9 @@ import org.distributedproficiency.dojo.domain.*;
 import org.distributedproficiency.dojo.repository.KataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 public class KataServiceImpl implements KataService {
 
@@ -16,6 +18,18 @@ public class KataServiceImpl implements KataService {
 
     @Autowired
     private KataRepository kataRepository;
+
+    @Override
+    public Collection<Kata> getAllKatasByAuthor(User u) {
+        return kataRepository.findAll().stream().filter(
+                (Kata k) -> { return k.getAuthor().getUsername().equalsIgnoreCase(u.getUsername()); }
+        ).collect(Collectors.toList());
+    }
+
+    @Override
+    public Kata getKataById(Long id) {
+        return kataRepository.findOne(id);
+    }
 
     @Override
     public Kata initiateCreateKata(User u) {
@@ -34,7 +48,6 @@ public class KataServiceImpl implements KataService {
 
     @Override
     public Kata saveKataPrePublish(Kata k) {
-        k.setStatus(KataStatus.CREATED);
         k.setLastUpdatedDateTime(new Date());
         kataRepository.save(k);
         return k;
