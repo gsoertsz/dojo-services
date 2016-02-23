@@ -11,6 +11,8 @@ import org.distributedproficiency.dojo.services.UserService;
 import org.distributedproficiency.dojo.swagger.DojoApiDocoWorthy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +29,7 @@ public class KataController {
     @Autowired
     private UserService userService;
 
+    //@PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/kata", method= RequestMethod.POST)
     @ResponseStatus(code = org.springframework.http.HttpStatus.CREATED)
     public KataCreatedResponse initiateCreateNewKata(@RequestBody KataCreateRequest createRequest, HttpServletResponse response) {

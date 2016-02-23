@@ -18,7 +18,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User createUserWithUsernameAndType(String username) throws UserAlreadyExistsException {
 		if (username == null) throw new IllegalArgumentException("Username was null");
-		
+
+
 		User existingUser = userRepository.findUserByUsername(username);
 		if (existingUser != null) throw new UserAlreadyExistsException("User with username ["+username+"] already exists");
 		
