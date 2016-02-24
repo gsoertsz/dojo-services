@@ -16,55 +16,56 @@ import com.squareup.okhttp.OkHttpClient;
  * validate SSL certificates that are used for HTTPS. You should
  * NEVER use a client like this in a production application. Self-signed
  * certificates are ususally only OK for testing purposes, such as
- * this use case. 
- * 
- * @author jules
+ * this use case.
  *
+ * @author jules
  */
 public class UnsafeHttpsClient {
 
-	public static OkHttpClient getUnsafeOkHttpClient() {
+    public static OkHttpClient getUnsafeOkHttpClient() {
         try {
-          // Create a trust manager that does not validate certificate chains
-          final TrustManager[] trustAllCerts = new TrustManager[] {
-              new X509TrustManager() {
+            // Create a trust manager that does not validate certificate chains
+            final TrustManager[] trustAllCerts = new TrustManager[]{
+                    new X509TrustManager() {
 
+                        @Override
+                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                        }
+
+                        @Override
+                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                        }
+
+                        @Override
+                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                            return null;
+                        }
+                    }
+            };
+
+            // Install the all-trusting trust manager
+            final SSLContext sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+            // Create an ssl socket factory with our all-trusting manager
+            final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+            okHttpClient.setSslSocketFactory(sslSocketFactory);
+            okHttpClient.setHostnameVerifier(new HostnameVerifier() {
                 @Override
-                public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
                 }
+            });
 
-                @Override
-                public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                }
-
-                @Override
-                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                  return null;
-                }
-              }
-          };
-
-          // Install the all-trusting trust manager
-          final SSLContext sslContext = SSLContext.getInstance("SSL");
-          sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-          // Create an ssl socket factory with our all-trusting manager
-          final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-
-          OkHttpClient okHttpClient = new OkHttpClient();
-          okHttpClient.setSslSocketFactory(sslSocketFactory);
-          okHttpClient.setHostnameVerifier(new HostnameVerifier() {
-            @Override
-            public boolean verify(String hostname, SSLSession session) {
-              return true;
-            }
-          });
-
-          return okHttpClient;
+            return okHttpClient;
         } catch (Exception e) {
-          throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
-      }
+    }
 
-
+    public static OkHttpClient unsafeNonSslHttpClient() {
+        return new OkHttpClient();
+    }
 
 }

@@ -46,7 +46,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 				
 				try {
 					// create the user
-					User user = userService.createUserWithUsernameAndType(r.getUsername());
+					User user = userService.createUserWithUsernameAndType(r.getUsername(), null, null);
 					userRepository.save(user);
 					
 					// create the patient

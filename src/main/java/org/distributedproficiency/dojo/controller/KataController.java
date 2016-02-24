@@ -30,7 +30,7 @@ public class KataController {
     private UserService userService;
 
     //@PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/kata", method= RequestMethod.POST)
+    @RequestMapping(value = "/katas", method= RequestMethod.POST)
     @ResponseStatus(code = org.springframework.http.HttpStatus.CREATED)
     public KataCreatedResponse initiateCreateNewKata(@RequestBody KataCreateRequest createRequest, HttpServletResponse response) {
         try {
@@ -44,7 +44,7 @@ public class KataController {
         }
     }
 
-    @RequestMapping(value="/kata", method = RequestMethod.GET)
+    @RequestMapping(value="/katas", method = RequestMethod.GET)
     public Collection<Kata> getAllKatasByAuthor(@RequestParam String u, HttpServletResponse response) {
         try {
             User user = userService.findUserByUsername(u);

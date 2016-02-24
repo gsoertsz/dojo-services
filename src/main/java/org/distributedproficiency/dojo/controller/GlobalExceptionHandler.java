@@ -2,30 +2,36 @@ package org.distributedproficiency.dojo.controller;
 
 import org.distributedproficiency.dojo.common.DojoSomethingAlreadyExistsException;
 import org.distributedproficiency.dojo.common.DojoSomethingNotFoundException;
+import org.distributedproficiency.dojo.dto.DojoErrorResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-@Controller
-public class GlobalExceptionHandler {
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 
-    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Not Found!")
-    @ExceptionHandler(DojoSomethingNotFoundException.class)
-    public void handleNotFoundExceptions() {
-        ; // annotations handle this.
-    }
+@ControllerAdvice
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ResponseStatus(value = HttpStatus.CONFLICT, reason = "Already exists!")
     @ExceptionHandler(DojoSomethingAlreadyExistsException.class)
-    public void handleAlreadyExistsException() {
-        ; // annotations handle this
+    @ResponseBody
+    ResponseEntity<?> handleControllerException(HttpServletRequest request, Throwable ex) {
+        HttpStatus status = getStatus(request);
+        return new ResponseEntity<>(new DojoErrorResponse(status.value(), ex.getMessage()), status);
     }
 
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Internal error!")
-    @ExceptionHandler(RuntimeException.class)
-    public void handleGenericError() {
-        ; // annotations handle this
+    private HttpStatus getStatus(HttpServletRequest request) {
+        Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
+        if (statusCode == null) {
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return HttpStatus.valueOf(statusCode);
     }
-
 }

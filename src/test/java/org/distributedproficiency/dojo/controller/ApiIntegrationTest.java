@@ -3,9 +3,7 @@ package org.distributedproficiency.dojo.controller;
 import org.distributedproficiency.dojo.DojoServiceProxy;
 import org.distributedproficiency.dojo.UnsafeHttpsClient;
 import org.distributedproficiency.dojo.client.SecuredRestBuilder;
-import org.distributedproficiency.dojo.dto.InitiateRegistrationRequest;
-import org.distributedproficiency.dojo.dto.InitiatedRegistrationResponse;
-import org.distributedproficiency.dojo.dto.RegistrationRequest;
+import org.distributedproficiency.dojo.dto.*;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -23,18 +21,26 @@ public class ApiIntegrationTest {
     private final String PASSWORD = "pass";
     private final String ADMIN_USERNAME = "superuser";
     private final String ADMIN_PASSWORD = "imimpatient";
-    private final String CLIENT_ID = "mobile";
-    private final String READ_ONLY_CLIENT_ID = "mobileReader";
+    private final String CLIENT_ID = "web";
 
-    private final String TEST_URL = "https://localhost:8443";
+    private final String TEST_URL = "http://localhost:8081";
 
 
-    private DojoServiceProxy patientServiceProxy = new SecuredRestBuilder()
+    private DojoServiceProxy dojoServiceProxy = new SecuredRestBuilder()
             .setLoginEndpoint(TEST_URL + DojoServiceProxy.TOKEN_RSC_PATH)
             .setUsername(USERNAME)
             .setPassword(PASSWORD)
             .setClientId(CLIENT_ID)
             .setClient(new OkClient(UnsafeHttpsClient.getUnsafeOkHttpClient()))
+            .setEndpoint(TEST_URL).setLogLevel(RestAdapter.LogLevel.FULL).build()
+            .create(DojoServiceProxy.class);
+
+    private DojoServiceProxy nonSslDojoServiceProxy = new SecuredRestBuilder()
+            .setLoginEndpoint(TEST_URL + DojoServiceProxy.TOKEN_RSC_PATH)
+            .setUsername(USERNAME)
+            .setPassword(PASSWORD)
+            .setClientId(CLIENT_ID)
+            .setClient(new OkClient(UnsafeHttpsClient.unsafeNonSslHttpClient()))
             .setEndpoint(TEST_URL).setLogLevel(RestAdapter.LogLevel.FULL).build()
             .create(DojoServiceProxy.class);
 
@@ -92,5 +98,25 @@ public class ApiIntegrationTest {
 
         adminServiceProxy.createAdminUser("gsoertszadmin");
 
+    }
+
+    @Ignore
+    @Test
+    public void testCreateKataAsAuthor() {
+        KataCreateRequest request = new KataCreateRequest();
+        request.setAuthorId("gsoertsz");
+
+        KataCreatedResponse response
+                    = nonSslDojoServiceProxy.initiateCreateKata(request);
+    }
+
+    @Test
+    public void testCreateAuthor() {
+
+        UserCreateRequest ucr = new UserCreateRequest();
+        ucr.setUsername("gsoertsz");
+
+        UserCreatedResponse response
+                 = nonSslDojoServiceProxy.createUser(ucr);
     }
 }

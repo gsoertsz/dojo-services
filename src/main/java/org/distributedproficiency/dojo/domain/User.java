@@ -6,12 +6,17 @@
  */
 package org.distributedproficiency.dojo.domain;
 
+import org.distributedproficiency.dojo.auth.DojoUserRole;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
 
 @Entity
-public class User /*implements UserDetails*/ {
+public class User implements UserDetails {
 	
 	/**
 	 * 
@@ -22,13 +27,6 @@ public class User /*implements UserDetails*/ {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 
-    public Date getCreatedDateTime() {
-        return createdDateTime;
-    }
-
-    public void setCreatedDateTime(Date createdDateTime) {
-        this.createdDateTime = createdDateTime;
-    }
 
     @Temporal(value=TemporalType.TIMESTAMP)
     private Date createdDateTime;
@@ -39,15 +37,17 @@ public class User /*implements UserDetails*/ {
     @OneToMany
     private Collection<KataAttempt> inProgressKatas;
 
-    public static User create(String username) {
-        User u = new User(username);
-        return u;
-    }
+    private DojoUserRole userRole;
+
+    private boolean accountNonExpired;
+    private boolean credentialsNonExpired;
+    private boolean enabled;
+    private boolean accountNonLocked;
 
 	private String username;
 
 	private String password;
-	
+
 	public User() {
 		super();
 	}
@@ -91,8 +91,33 @@ public class User /*implements UserDetails*/ {
         return username;
     }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return accountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return credentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return AuthorityUtils.createAuthorityList(userRole.toString());
     }
 
     public String getPassword() {
@@ -101,5 +126,29 @@ public class User /*implements UserDetails*/ {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Date getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public void setCreatedDateTime(Date createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
+
+
+    public DojoUserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(DojoUserRole userRole) {
+        this.userRole = userRole;
+    }
+
+    public static User create(String username, String password, DojoUserRole role) {
+        User u = new User(username, password);
+        u.setUserRole(role);
+
+        return u;
     }
 }
